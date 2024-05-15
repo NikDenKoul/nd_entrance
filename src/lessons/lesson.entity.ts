@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "../users/user.entity";
+import { Evaluation } from "./evaluation.entity";
 
 @Entity()
 export class Lesson {
@@ -10,4 +12,7 @@ export class Lesson {
 
   @Column({  length: 20 })
   code: string;
+
+  @OneToMany(() => Evaluation, (evaluation) => evaluation.lesson)
+  evaluations: Evaluation[];
 }

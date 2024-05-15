@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Res } from "@nestjs/common";
 import { LessonsService } from "./lessons.service";
 import { CreateLessonDto } from "./lessons.dto";
+import { CreateEvaluationDto } from "./evaluations.dto";
 
 @Controller('api/lessons')
 export class LessonsController {
@@ -21,8 +22,15 @@ export class LessonsController {
     }
   }
 
-  @Post("api/lessons/:id/evaluations")
-  async createLesson(@Param('id') lessonId: number) {
-
+  @Post(":id/evaluations")
+  async createLesson(@Param('id') lessonId: number,
+                     @Body() evaluationData: CreateEvaluationDto,
+                     @Res() response) {
+    const [newEvaluation, error] = await this.lessonsService.createEvaluation(lessonId, evaluationData.user_id, evaluationData.score);
+    if (error) {
+      response.status(500).send(error.message);
+    } else {
+      response.send(newEvaluation);
+    }
   }
 }

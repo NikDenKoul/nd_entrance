@@ -5,6 +5,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { databaseConfig } from '../../config/';
 import { QueryFailedError } from "typeorm";
+import { Evaluation } from "../lessons/evaluation.entity";
+import { Lesson } from "../lessons/lesson.entity";
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -16,8 +18,8 @@ describe('UsersController', () => {
       imports: [
         TypeOrmModule.forRoot({
           ...databaseConfig,
-          entities: [User],
-          synchronize: true,
+          entities: [User, Evaluation, Lesson],
+          synchronize: false,
         }),
         TypeOrmModule.forFeature([User])
       ],
